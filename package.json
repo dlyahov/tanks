@@ -1,0 +1,19 @@
+{
+  "name": "tanks",
+  "version": "1.0.0",
+  "description": "My favorite game",
+  "main": "controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dlyahov/tanks.git"
+  },
+  "author": "Liakhov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dlyahov/tanks/issues"
+  },
+  "homepage": "https://github.com/dlyahov/tanks#readme"
+}
