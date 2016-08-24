@@ -1,0 +1,4 @@
+var Status = {
+    NON_EXISTS : 0,
+    EXISTS : 1
+};
