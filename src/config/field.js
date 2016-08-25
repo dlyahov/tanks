@@ -1,12 +1,10 @@
-var field = function () {
-    var field;
+var MapElements = require('config/map-elements'),
     field = [[MapElements.WALL, MapElements.WALL, MapElements.USER_PANZER],
                 [MapElements.WALL, MapElements.WALL, MapElements.WALL],
                 [MapElements.WALL, MapElements.WALL, MapElements.WALL]];
 
-    return {
-        getField : function () {
-            return field;
-        }
-    };
+module.exports = {
+    field : function () {
+        return field;
+    }
 };

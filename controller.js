@@ -1,63 +1,49 @@
-var ctx, canvas, userPanzer, RESOURCE_PATH = "resources",
+var ctx, canvas, RESOURCE_PATH = "resources",
     tankWidth, tankHeight,
     leftPressed, rightPressed, upPressed, downPressed,
-    userPanzerX, userPanzerY,
-    currentFieldComponent,
-    render;
+    Render = require("render/render"), render,
+    Key = require('config/keys'),
+    Component = require('components/component'),
+    Panzer = require('components/panzer'), userPanzer,
+    MapElements = require('config/map-elements'),
 
-canvas = document.getElementById('canvas');
-ctx = canvas.getContext('2d');
-userPanzerX = canvas.width / 2;
-userPanzerY = canvas.height - 100;
+    myField = require('config/field').field();
 
-// userPanzer = panzer(RESOURCE_PATH + "/" + "panzer-transperency-new.png", userPanzerX, userPanzerY);
+render = new Render('canvas');
 
-// render = render();
-render = require("./render/render.js");
-render.myAlert("round");
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
 
-// function draw() {
-//     clearField();
-//     render.drawRect(20, 40);
-//     if (userPanzer.isLoaded()) {
-//         render.drawField(currentFieldComponent);
-//         render.drawPanzer(userPanzer);
-//         controlPanzer(userPanzer);
-//     }
-//     requestAnimationFrame(draw);
-// }
-//
-// document.addEventListener("keydown", keyDownHandler, false);
-// document.addEventListener("keyup", keyUpHandler, false);
-//
-// initField();
-// draw();
-//
-// function clearField() {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-// }
-//
-// function canMoveRight(panzer) {
-//     var size = panzer.getSize();
-//     return panzer.getX() + size.width <= canvas.width;
-// }
-//
-// function initField() {
-//     var currField = field().getField(),
-//         resultField = [];
-//     for (let i = 0; i < currField.length; i++) {
-//         resultField[i] = [];
-//         for (let j = 0; j < currField.length; j++) {
-//             if (currField[i][j] === MapElements.WALL) {
-//                 resultField[i][j] = wall(i, j);
-//             } else {
-//                 resultField[i][j] = null;
-//             }
-//         }
-//     }
-//
-//     currentFieldComponent = resultField;
-// }
+initField();
+draw();
+
+function initField() {
+    var resultField = [];
+    for (let i = 0; i < myField.length; i++) {
+        resultField[i] = [];
+        for (let j = 0; j < myField.length; j++) {
+            let size = getSize
+            if (myField[i][j] === MapElements.USER_PANZER) {
+                userPanzer = new Panzer(i * userPanzer.getS, j);
+                resultField[i][j] = userPanzer;
+            } else {
+                resultField[i][j] = null;
+            }
+        }
+    }
+    currentFieldComponent = resultField;
+}
+
+function draw() {
+    render.clearField();
+    render.drawRect(20, 40);
+    if (userPanzer.isImageLoaded()) {
+        render.drawMap(currentFieldComponent);
+        render.drawPanzer(userPanzer);
+        controlPanzer(userPanzer);
+    }
+    requestAnimationFrame(draw);
+}
 
 function controlPanzer(userPanzer) {
     if (rightPressed && canMoveRight(userPanzer)) {
@@ -69,6 +55,12 @@ function controlPanzer(userPanzer) {
     } else if (downPressed) {
         userPanzer.moveDown();
     }
+}
+
+function canMoveRight(panzer) {
+    var panzerSize = panzer.getSize(),
+        panzerCoordinates = panzer.getCoordinates();
+    return panzerCoordinates.x + panzerSize.width <= render.getCanvasSize().width;
 }
 
 function keyDownHandler(e) {

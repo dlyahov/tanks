@@ -1,6 +1,0 @@
-var MapElements = {
-    USER_PANZER : 0,
-    EMPTY : 1,
-    ENEMY_PANZER : 2,
-    WALL : 3
-};
