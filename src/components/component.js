@@ -1,4 +1,6 @@
-var componentBody = {}, Status;
+var componentBody = {}, 
+    Status,
+    componentSize = require("./component-size");
 
 Status = require('config/status');
 
@@ -11,10 +13,8 @@ function Component(x, y, path) {
         x : x,
         y : y
     };
-    componentBody.size = {
-        height : 32,
-        width : 32
-    };
+    componentBody.size = componentSize;
+
     componentBody.image.onload = function () {
         componentBody.load = true;
     };

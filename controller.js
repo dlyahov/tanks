@@ -2,7 +2,8 @@ var ctx, canvas, RESOURCE_PATH = "resources",
     tankWidth, tankHeight,
     leftPressed, rightPressed, upPressed, downPressed,
     Render = require("render/render"), render,
-    Key = require('config/keys'),
+    Key = require('config/keys.json'),
+    ComponentSize = require("components/component-size"),
     Component = require('components/component'),
     Panzer = require('components/panzer'), userPanzer,
     MapElements = require('config/map-elements'),
@@ -22,9 +23,8 @@ function initField() {
     for (let i = 0; i < myField.length; i++) {
         resultField[i] = [];
         for (let j = 0; j < myField.length; j++) {
-            let size = getSize
             if (myField[i][j] === MapElements.USER_PANZER) {
-                userPanzer = new Panzer(i * userPanzer.getS, j);
+                userPanzer = new Panzer(i * ComponentSize.width, j * ComponentSize.height);
                 resultField[i][j] = userPanzer;
             } else {
                 resultField[i][j] = null;
@@ -36,9 +36,8 @@ function initField() {
 
 function draw() {
     render.clearField();
-    render.drawRect(20, 40);
     if (userPanzer.isImageLoaded()) {
-        render.drawMap(currentFieldComponent);
+        // render.drawMap(currentFieldComponent);
         render.drawPanzer(userPanzer);
         controlPanzer(userPanzer);
     }
@@ -48,7 +47,7 @@ function draw() {
 function controlPanzer(userPanzer) {
     if (rightPressed && canMoveRight(userPanzer)) {
         userPanzer.moveRight();
-    } else if (leftPressed) {
+    } else if (leftPressed && canMoveLeft(userPanzer)) {
         userPanzer.moveLeft();
     } else if (upPressed) {
         userPanzer.moveUp();
@@ -61,6 +60,14 @@ function canMoveRight(panzer) {
     var panzerSize = panzer.getSize(),
         panzerCoordinates = panzer.getCoordinates();
     return panzerCoordinates.x + panzerSize.width <= render.getCanvasSize().width;
+}
+
+function canMoveLeft(panzer) {
+    var panzerSize = panzer.getSize(),
+        panzerCoordinates = panzer.getCoordinates();
+    console.log(panzerCoordinates.x + panzerSize.width);
+    
+    return panzerCoordinates.x + panzerSize.width >= 0;
 }
 
 function keyDownHandler(e) {

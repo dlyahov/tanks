@@ -7,7 +7,8 @@ module.exports = {
         path: __dirname + '/out'
     },
     resolve : {
-        modulesDirectories : ['src', 'node_modules']
+        modulesDirectories : ['src', 'node_modules'],
+        extensions: ['', '.js', '.json']
     },
     module: {
         loaders: [

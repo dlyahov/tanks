@@ -19,7 +19,7 @@ Render.prototype.drawMap = function (fieldOfComponents) {
 
 Render.prototype.drawRect = function (x, y) {
     ctx.beginPath();
-    ctx.rect(x, y, 50, 80);
+    ctx.rect(x, y, 2, 2);
     ctx.fillStyle = "#f00";
     ctx.fill();
     ctx.closePath();
@@ -28,15 +28,17 @@ Render.prototype.drawRect = function (x, y) {
 Render.prototype.drawPanzer = function (userPanzer) {
     var size = userPanzer.getSize(),
         coordinates = userPanzer.getCoordinates();
-    centerX = coordinates.x - size.width / 2,
-    centerY = coordinates.y - size.height / 2;
+    centerX = (coordinates.x + size.width),
+    centerY = (coordinates.y + size.height);
     ctx.save();
-
     ctx.translate(centerX, centerY);
 
     ctx.rotate(userPanzer.getRotation() * Math.PI / 180);
-    ctx.drawImage(userPanzer.getImage(), -(size.width / 2), -(size.height / 2));
+    
+    ctx.drawImage(userPanzer.getImage(), -size.width / 2, -size.height / 2);
     ctx.restore();
+
+    this.drawRect(centerX, centerY);
 }
 
 Render.prototype.clearField = function () {

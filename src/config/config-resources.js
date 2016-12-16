@@ -1,6 +1,6 @@
 var mainPath = "resources",
     wall = "wall.png",
-    panzer = "panzer-transperency-new.png",
+    panzer = "dendy-tanks.png",
     empty = "empty.png";
 
 module.exports = {
