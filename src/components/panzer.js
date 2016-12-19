@@ -4,11 +4,14 @@ var dx = 2, dy = 2,
     resources = require('config/config-resources'),
     Rotation = require('config/rotation');
 
+Panzer.prototype = Object.create(Component.prototype)
+Panzer.prototype.constructor = Panzer;
+
 function Panzer(x, y) {
-    Component.call(this, x, y, resources.panzerPath);
+    Component.apply(this, [x, y, resources.panzerPath]);
     Component.prototype.componentBody.rotation = Rotation.RIGHT;
 }
-util.inherits(Panzer, Component);
+// util.inherits(Panzer, Component);
 
 function move(dx, dy) {
     Component.prototype.componentBody.coordinates.x += dx;

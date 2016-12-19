@@ -5,16 +5,23 @@ function Render(idCanvas) {
     ctx = canvas.getContext('2d');
 }
 
-Render.prototype.drawMap = function (fieldOfComponents) {
-    for (let i = 0; i < fieldOfComponents.length; i++) {
-        for (let j = 0; j < fieldOfComponents[i].length; j++) {
-            if (fieldOfComponents[i][j] !== null) {
-                let component = fieldOfComponents[i][j];
-                ctx.drawImage(component.getImage(), component.getCoordinates().x,
-                                component.getCoordinates().y);
+/**
+ * Return objects on map!
+ */
+Render.prototype.drawMap = function (map) {
+    var field = map.getField();
+    for (let i = 0; i < field.length; i++) {
+        for (let j = 0; j < field[i].length; j++) {
+            if (field[i][j] !== null) {
+                drawComponent(field[i][j]);
             }
         }
     }
+}
+
+function drawComponent(component) {
+    ctx.drawImage(component.getImage(), component.getCoordinates().x,
+                    component.getCoordinates().y);
 }
 
 Render.prototype.drawRect = function (x, y) {

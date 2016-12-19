@@ -1,55 +1,55 @@
-var componentBody = {}, 
-    Status,
-    componentSize = require("./component-size");
-
-Status = require('config/status');
+var componentSize = require("./component-size"),
+    Status = require('config/status');
 
 function Component(x, y, path) {
-    componentBody.load = false;
-    componentBody.image = new Image();
-    componentBody.image.src = path;
-    componentBody.status = Status.EXISTS;
-    componentBody.coordinates = {
+    this.componentBody = {};
+
+    this.componentBody.load = false;
+    this.componentBody.image = new Image();
+    this.componentBody.image.src = path;
+    this.componentBody.status = Status.EXISTS;
+    this.componentBody.coordinates = {
         x : x,
         y : y
     };
-    componentBody.size = componentSize;
+    this.componentBody.size = componentSize;
 
-    componentBody.image.onload = function () {
-        componentBody.load = true;
-    };
+    this.componentBody.image.onload = this.loadComplete.bind(this);
+
+    Component.prototype.componentBody = this.componentBody;
 };
 
+Component.prototype.loadComplete = function () {
+    this.componentBody.load = true;
+}
 
 Component.prototype.getImage = function () {
-    return componentBody.image;
+    return this.componentBody.image;
 };
 
 Component.prototype.isImageLoaded = function () {
-    return componentBody.load;
+    return this.componentBody.load;
 };
 
 Component.prototype.getCoordinates = function () {
-    return componentBody.coordinates;
+    return this.componentBody.coordinates;
 };
 
 Component.prototype.setCoordinates = function (x, y) {
-    componentBody.coordinates.x = x;
-    componentBody.coordinates.y = y;
+    this.componentBody.coordinates.x = x;
+    this.componentBody.coordinates.y = y;
 };
 
 Component.prototype.getSize = function () {
-    return componentBody.size;
+    return this.componentBody.size;
 };
 
 Component.prototype.getStatus = function () {
-    return componentBody.status;
+    return this.componentBody.status;
 };
 
 Component.prototype.remove = function () {
-    componentBody.status = Status.NON_EXISTS;
+    this.componentBody.status = Status.NON_EXISTS;
 };
-
-Component.prototype.componentBody = componentBody;
 
 module.exports = Component;

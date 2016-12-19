@@ -7,6 +7,8 @@ var ctx, canvas, RESOURCE_PATH = "resources",
     Component = require('components/component'),
     Panzer = require('components/panzer'), userPanzer,
     MapElements = require('config/map-elements'),
+    Wall = require('components/wall'),
+    Map = require('config/map'), map,
 
     myField = require('config/field').field();
 
@@ -22,24 +24,33 @@ function initField() {
     var resultField = [];
     for (let i = 0; i < myField.length; i++) {
         resultField[i] = [];
-        for (let j = 0; j < myField.length; j++) {
-            if (myField[i][j] === MapElements.USER_PANZER) {
-                userPanzer = new Panzer(i * ComponentSize.width, j * ComponentSize.height);
-                resultField[i][j] = userPanzer;
-            } else {
-                resultField[i][j] = null;
-            }
+        for (let j = 0; j < myField[i].length; j++) {
+            resultField[i][j] = parseElement(myField[i][j], i, j);
         }
     }
-    currentFieldComponent = resultField;
+    map = new Map(resultField);
+    console.log(resultField);
 }
+
+function parseElement(element, i, j) {
+    var resultElement;
+    if (element === MapElements.USER_PANZER) {
+        resultElement = new Panzer(j * ComponentSize.height, i * ComponentSize.width);
+    } else if (element === MapElements.WALL) {
+        resultElement = new Wall(j * ComponentSize.height, i * ComponentSize.width);
+    } else {
+        resultElement = null;
+    }
+    return resultElement;
+}
+
 
 function draw() {
     render.clearField();
-    if (userPanzer.isImageLoaded()) {
-        // render.drawMap(currentFieldComponent);
-        render.drawPanzer(userPanzer);
-        controlPanzer(userPanzer);
+    if (map.isLoad()) {
+        let mapObjects = render.drawMap(map);
+        // render.drawPanzer(userPanzer);
+        // controlPanzer(userPanzer);
     }
     requestAnimationFrame(draw);
 }
@@ -66,7 +77,7 @@ function canMoveLeft(panzer) {
     var panzerSize = panzer.getSize(),
         panzerCoordinates = panzer.getCoordinates();
     console.log(panzerCoordinates.x + panzerSize.width);
-    
+
     return panzerCoordinates.x + panzerSize.width >= 0;
 }
 

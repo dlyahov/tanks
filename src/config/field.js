@@ -1,7 +1,12 @@
-var MapElements = require('config/map-elements'),
-    field = [[MapElements.WALL, MapElements.WALL, MapElements.USER_PANZER],
-                [MapElements.WALL, MapElements.WALL, MapElements.WALL],
-                [MapElements.WALL, MapElements.WALL, MapElements.WALL]];
+var me = require('config/map-elements'),
+    field = [[me.WALL, me.WALL, me.USER_PANZER, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL],
+             [me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL, me.WALL]];
 
 module.exports = {
     field : function () {
