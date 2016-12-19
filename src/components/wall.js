@@ -9,6 +9,4 @@ function Wall(x, y) {
     Component.apply(this, [x, y, resources.wallPath]);
 }
 
-// util.inherits(Wall, Component);
-
 module.exports = Wall;

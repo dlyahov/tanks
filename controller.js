@@ -8,6 +8,7 @@ var ctx, canvas, RESOURCE_PATH = "resources",
     Panzer = require('components/panzer'), userPanzer,
     MapElements = require('config/map-elements'),
     Wall = require('components/wall'),
+    Empty = require('components/empty'),
     Map = require('config/map'), map,
 
     myField = require('config/field').field();
@@ -33,11 +34,17 @@ function initField() {
 }
 
 function parseElement(element, i, j) {
-    var resultElement;
+    var resultElement, 
+        x = j * ComponentSize.height,
+        y = i * ComponentSize.width;
+
     if (element === MapElements.USER_PANZER) {
-        resultElement = new Panzer(j * ComponentSize.height, i * ComponentSize.width);
+        resultElement = new Panzer(x, y);
+        userPanzer = resultElement;
     } else if (element === MapElements.WALL) {
-        resultElement = new Wall(j * ComponentSize.height, i * ComponentSize.width);
+        resultElement = new Wall(x, y);
+    } else if (element === MapElements.EMPTY) {
+        resultElement = new Empty(x, y);
     } else {
         resultElement = null;
     }
@@ -48,9 +55,8 @@ function parseElement(element, i, j) {
 function draw() {
     render.clearField();
     if (map.isLoad()) {
-        let mapObjects = render.drawMap(map);
-        // render.drawPanzer(userPanzer);
-        // controlPanzer(userPanzer);
+        render.drawAll(map);
+        controlPanzer(userPanzer);
     }
     requestAnimationFrame(draw);
 }

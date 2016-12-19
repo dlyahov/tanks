@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8"/>
         <title>Cool game</title>
-        <link rel="stylesheet" type="text/css" href="style.css" >
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css" >
     </head>
     <body>
         <div class="game-field-wrapper">
-            <canvas id="canvas" width="480" height="480"/>
+            <canvas id="canvas-bottom" class="canvas layer-0" width="480" height="384"/>
+            <canvas id="canvas-top" class="canvas layer-1" width="480" height="384"/>
         </div>
         <script src="out/bundle.js"></script>
     </body>

@@ -1,7 +1,7 @@
-var mainPath = "resources",
+var mainPath = "resources/pictures",
     wall = "wall.png",
     panzer = "dendy-tanks.png",
-    empty = "empty.png";
+    empty = "grass.jpg";
 
 module.exports = {
     panzerPath : mainPath + "/" + panzer,
