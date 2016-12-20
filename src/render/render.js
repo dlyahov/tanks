@@ -1,12 +1,13 @@
 var topContext, topContext, images, canvas,
     Panzer = require('components/panzer'),
     Empty = require('components/empty')
-    ComponentSize = require("components/component-size");
+    ComponentSize = require("components/component-size"),
+    isPaintedBackend = true;
 
 function Render(idCanvas) {
     canvas = document.getElementById('canvas-bottom');
     bottomContext = document.getElementById('canvas-bottom').getContext('2d');
-    topContext = document.getElementById('canvas-bottom').getContext('2d');
+    topContext = document.getElementById('canvas-top').getContext('2d');
 }
 
 Render.prototype.drawBottomLayer = function(map) {
@@ -14,11 +15,13 @@ Render.prototype.drawBottomLayer = function(map) {
         empty = new Empty(0, 0);
     for (let i = 0; i < field.length; i++) {
         for (let j = 0; j < field[i].length; j++) {
-            let x = j * ComponentSize.height;
-            let y = i * ComponentSize.width;
+            let x = i * ComponentSize.height;
+            let y = j * ComponentSize.width;
             bottomContext.drawImage(empty.getImage(), x, y);
         }
     }
+
+    bottomContext.save();
 }
 
 /**
@@ -36,7 +39,10 @@ Render.prototype.drawMap = function (map) {
 }
 
 Render.prototype.drawAll = function(map) {
-    this.drawBottomLayer(map);
+    if (isPaintedBackend) {
+        this.drawBottomLayer(map);
+        isPaintedBackend = false;
+    }
     this.drawMap(map);
 }
 
@@ -59,7 +65,7 @@ function drawPanzer(userPanzer) {
 
     topContext.rotate(userPanzer.getRotation() * Math.PI / 180);
     
-    topContext.drawImage(userPanzer.getImage(), -size.width / 1.5, -size.height / 2);
+    topContext.drawImage(userPanzer.getImage(), -size.width / 2, -size.height / 2);
     topContext.restore();
 
     drawRect(centerX, centerY);
