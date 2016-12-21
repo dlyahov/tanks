@@ -1,4 +1,4 @@
-var mainPath = "resources/pictures",
+let mainPath = "resources/pictures",
     wall = "wall.png",
     panzer = "dendy-tanks.png",
     empty = "grass.jpg";

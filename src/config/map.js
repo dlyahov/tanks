@@ -1,4 +1,4 @@
-var mapObject = {};
+let mapObject = {};
 
 function Map(field) {
     mapObject.field = field;
@@ -9,7 +9,7 @@ Map.prototype.getField = function() {
 }
 
 Map.prototype.isLoad = function() {
-    var field = mapObject.field;
+    let field = mapObject.field;
     for (let i = 0; i < field.length; i++) {
         for (let j = 0; j < field[i].length; j++) {
             if (field[i][j] && !field[i][j].isImageLoaded()) {

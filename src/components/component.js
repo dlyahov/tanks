@@ -1,4 +1,4 @@
-var componentSize = require("./component-size"),
+let componentSize = require("./component-size"),
     Status = require('config/status');
 
 function Component(x, y, path) {

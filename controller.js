@@ -1,4 +1,4 @@
-var ctx, canvas, RESOURCE_PATH = "resources",
+let ctx, canvas, RESOURCE_PATH = "resources",
     tankWidth, tankHeight,
     leftPressed, rightPressed, upPressed, downPressed,
     Render = require("render/render"), render,
@@ -22,7 +22,7 @@ initField();
 draw();
 
 function initField() {
-    var resultField = [];
+    let resultField = [];
     for (let i = 0; i < myField.length; i++) {
         resultField[i] = [];
         for (let j = 0; j < myField[i].length; j++) {
@@ -33,7 +33,7 @@ function initField() {
 }
 
 function parseElement(element, i, j) {
-    var resultElement, 
+    let resultElement, 
         x = i * ComponentSize.height,
         y = j * ComponentSize.width;
     
@@ -64,7 +64,7 @@ function draw() {
 }
 
 function cordinateOnField(component) {
-    var field = map.getField();
+    let field = map.getField();
 
         i = Math.ceil(component.getCoordinates().x / Component.getSize().width),
         j = Math.ceil(component.getCoordinates().y / Component.getSize().height);
@@ -77,7 +77,7 @@ function cordinateOnField(component) {
 }
 
 function controlPanzer(userPanzer) {
-    var coordinateField = cordinateOnField(userPanzer);
+    let coordinateField = cordinateOnField(userPanzer);
     if (rightPressed && canMoveRight(userPanzer, coordinateField)) {
         userPanzer.moveRight();
         rightPressed = false;
@@ -93,66 +93,49 @@ function controlPanzer(userPanzer) {
     }
 }
 
-function canMoveRight(panzer, coordinateField) {
-    var panzerSize = panzer.getSize(),
+function canMoveRight(panzer, coordinate) {
+    let field = map.getField(),
         panzerCoordinates = panzer.getCoordinates(),
-        boundBorder = panzerCoordinates.x + panzerSize.width <= render.getCanvasSize().width,
-        field = map.getField(),
-        isWall = false;
-
-    if (coordinateField.i + 1 < field.length && field[coordinateField.i + 1][coordinateField.j] instanceof Wall) {
-        wallCoordinates = field[coordinateField.i + 1][coordinateField.j].getCoordinates();
-        
-        isWall = panzerCoordinates.x + panzerSize.width <= wallCoordinates.x;
-    }
-    return boundBorder && !isWall;
+        panzerSize = panzer.getSize(),
+        boundBorder = panzerCoordinates.x + panzerSize.width < render.getCanvasSize().width;
+    
+    return coordinate.i + 1 < field.length 
+            && canMove(boundBorder, field[coordinate.i + 1][coordinate.j]);
 }
 
 function canMoveLeft(panzer, coordinateField) {
-    var panzerSize = panzer.getSize(),
+    let field = map.getField();
         panzerCoordinates = panzer.getCoordinates(),
-        boundBorder = panzerCoordinates.x + panzerSize.width >= 0,
-        field = map.getField(),
-        isWall = false;
+        panzerSize = panzer.getSize(),
+        boundBorder = panzerCoordinates.x - panzerSize.width >= 0;
 
-    if (coordinateField.i - 1 >= 0 && field[coordinateField.i - 1][coordinateField.j] instanceof Wall) {
-        wallCoordinates = field[coordinateField.i - 1][coordinateField.j].getCoordinates();
-        
-        isWall = panzerCoordinates.x - panzerSize.width <= wallCoordinates.x;
-    }
-    return boundBorder && !isWall;
+    return coordinateField.i - 1 >= 0 
+            && canMove(boundBorder, field[coordinateField.i - 1][coordinateField.j]);
 }
 
 function canMoveUp(panzer, coordinateField) {
-    var panzerSize = panzer.getSize(),
+    let field = map.getField();
         panzerCoordinates = panzer.getCoordinates(),
-        boundBorder = panzerCoordinates.y + panzerSize.height >= 0,
-        field = map.getField(),
-        isWall = false;
+        panzerSize = panzer.getSize(),
+        boundBorder = panzerCoordinates.y - panzerSize.height >= 0;
 
-    if (coordinateField.j - 1 >= 0 && field[coordinateField.i][coordinateField.j - 1] instanceof Wall) {
-        wallCoordinates = field[coordinateField.i][coordinateField.j - 1].getCoordinates();
-        
-        isWall = panzerCoordinates.y - panzerSize.height <= wallCoordinates.y;
-    }
-    return boundBorder && !isWall;
+    return coordinateField.j - 1 >= 0 
+            && canMove(boundBorder, field[coordinateField.i][coordinateField.j - 1]);
 }
 
 function canMoveDown(panzer, coordinateField) {
-    var panzerSize = panzer.getSize(),
+    let field = map.getField();
         panzerCoordinates = panzer.getCoordinates(),
-        boundBorder = panzerCoordinates.x + panzerSize.width <= render.getCanvasSize().width,
-        field = map.getField(),
-        isWall = false;
+        panzerSize = panzer.getSize(),
+        boundBorder = panzerCoordinates.y + panzerSize.height < render.getCanvasSize().height;
 
-     if (coordinateField.j + 1 < field[0].length && field[coordinateField.i][coordinateField.j + 1] instanceof Wall) {
-        wallCoordinates = field[coordinateField.i][coordinateField.j + 1].getCoordinates();
-        
-        isWall = panzerCoordinates.y + panzerSize.height <= wallCoordinates.y;
-    }
-    return boundBorder && !isWall;
+    return coordinateField.j + 1 < field[0].length
+            && canMove(boundBorder, field[coordinateField.i][coordinateField.j + 1]);
 }
 
+function canMove(boundBorder, nextElement) {
+    return boundBorder && !(nextElement instanceof Wall);
+}
 
 function keyDownHandler(e) {
     if (e.keyCode === Key.LEFT) {

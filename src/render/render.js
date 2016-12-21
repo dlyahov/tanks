@@ -1,4 +1,4 @@
-var topContext, topContext, images, canvas,
+let topContext, images, canvas,
     Panzer = require('components/panzer'),
     Empty = require('components/empty')
     ComponentSize = require("components/component-size"),
@@ -11,7 +11,7 @@ function Render(idCanvas) {
 }
 
 Render.prototype.drawBottomLayer = function(map) {
-    var field = map.getField(),
+    let field = map.getField(),
         empty = new Empty(0, 0);
     for (let i = 0; i < field.length; i++) {
         for (let j = 0; j < field[i].length; j++) {
@@ -56,7 +56,7 @@ function drawComponent(component) {
 }
 
 function drawPanzer(userPanzer) {
-    var size = userPanzer.getSize(),
+    let size = userPanzer.getSize(),
         coordinates = userPanzer.getCoordinates();
     centerX = (coordinates.x + size.width / 2),
     centerY = (coordinates.y + size.height / 2);

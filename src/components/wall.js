@@ -1,4 +1,4 @@
-var Component = require('components/component'),
+let Component = require('components/component'),
     util = require('util'),
     resources = require('config/config-resources');
 
