@@ -28,7 +28,7 @@ Render.prototype.drawBottomLayer = function(map) {
  * Return objects on map!
  */
 Render.prototype.drawMap = function (map) {
-    var field = map.getField();
+    let field = map.getField();
     for (let i = 0; i < field.length; i++) {
         for (let j = 0; j < field[i].length; j++) {
             if (field[i][j] !== null && !(field[i][j] instanceof Empty)) {
@@ -71,6 +71,9 @@ function drawPanzer(userPanzer) {
     drawRect(centerX, centerY);
 }
 
+/**
+ * For debugging
+ */
 function drawRect(x, y) {
     topContext.beginPath();
     topContext.rect(x, y, 1, 1);

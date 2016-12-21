@@ -34,9 +34,9 @@ function initField() {
 
 function parseElement(element, i, j) {
     var resultElement, 
-        x = i * ComponentSize.width,
-        y = j * ComponentSize.height;
-
+        x = i * ComponentSize.height,
+        y = j * ComponentSize.width;
+    
     if (element === MapElements.USER_PANZER) {
         resultElement = new Panzer(x, y);
         userPanzer = resultElement;
@@ -56,6 +56,9 @@ function draw() {
     if (map.isLoad()) {
         render.drawAll(map);
         controlPanzer(userPanzer);
+
+        console.log('userPanzer x ' + userPanzer.getCoordinates().x);
+        console.log('userPanzer y ' + userPanzer.getCoordinates().y);
     }
     requestAnimationFrame(draw);
 }
@@ -63,8 +66,8 @@ function draw() {
 function cordinateOnField(component) {
     var field = map.getField();
 
-        i = Math.ceil(component.getCoordinates().x / component.getSize().width),
-        j = Math.ceil(component.getCoordinates().y / component.getSize().height);
+        i = Math.ceil(component.getCoordinates().x / Component.getSize().width),
+        j = Math.ceil(component.getCoordinates().y / Component.getSize().height);
     
     return {
         i: i,
@@ -77,12 +80,16 @@ function controlPanzer(userPanzer) {
     var coordinateField = cordinateOnField(userPanzer);
     if (rightPressed && canMoveRight(userPanzer, coordinateField)) {
         userPanzer.moveRight();
+        rightPressed = false;
     } else if (leftPressed && canMoveLeft(userPanzer, coordinateField)) {
         userPanzer.moveLeft();
+        leftPressed = false;
     } else if (upPressed && canMoveUp(userPanzer, coordinateField)) {
         userPanzer.moveUp();
-    } else if (downPressed) {
+        upPressed = false;
+    } else if (downPressed && canMoveDown(userPanzer, coordinateField)) {
         userPanzer.moveDown();
+        downPressed = false;
     }
 }
 
@@ -93,8 +100,8 @@ function canMoveRight(panzer, coordinateField) {
         field = map.getField(),
         isWall = false;
 
-    if (coordinateField.j + 1 < field.length && field[coordinateField.i][coordinateField.j + 1] instanceof Wall) {
-        wallCoordinates = field[coordinateField.i][coordinateField.j + 1].getCoordinates();
+    if (coordinateField.i + 1 < field.length && field[coordinateField.i + 1][coordinateField.j] instanceof Wall) {
+        wallCoordinates = field[coordinateField.i + 1][coordinateField.j].getCoordinates();
         
         isWall = panzerCoordinates.x + panzerSize.width <= wallCoordinates.x;
     }
@@ -126,7 +133,22 @@ function canMoveUp(panzer, coordinateField) {
     if (coordinateField.j - 1 >= 0 && field[coordinateField.i][coordinateField.j - 1] instanceof Wall) {
         wallCoordinates = field[coordinateField.i][coordinateField.j - 1].getCoordinates();
         
-        isWall = panzerCoordinates.y - panzerSize.height <= wallCoordinates.x;
+        isWall = panzerCoordinates.y - panzerSize.height <= wallCoordinates.y;
+    }
+    return boundBorder && !isWall;
+}
+
+function canMoveDown(panzer, coordinateField) {
+    var panzerSize = panzer.getSize(),
+        panzerCoordinates = panzer.getCoordinates(),
+        boundBorder = panzerCoordinates.x + panzerSize.width <= render.getCanvasSize().width,
+        field = map.getField(),
+        isWall = false;
+
+     if (coordinateField.j + 1 < field[0].length && field[coordinateField.i][coordinateField.j + 1] instanceof Wall) {
+        wallCoordinates = field[coordinateField.i][coordinateField.j + 1].getCoordinates();
+        
+        isWall = panzerCoordinates.y + panzerSize.height <= wallCoordinates.y;
     }
     return boundBorder && !isWall;
 }

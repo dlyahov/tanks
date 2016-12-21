@@ -12,7 +12,6 @@ function Component(x, y, path) {
         x : x,
         y : y
     };
-    this.componentBody.size = componentSize;
 
     this.componentBody.image.onload = this.loadComplete.bind(this);
 
@@ -40,8 +39,12 @@ Component.prototype.setCoordinates = function (x, y) {
     this.componentBody.coordinates.y = y;
 };
 
+Component.getSize = function () {
+    return componentSize;
+};
+
 Component.prototype.getSize = function () {
-    return this.componentBody.size;
+    return componentSize;
 };
 
 Component.prototype.getStatus = function () {
