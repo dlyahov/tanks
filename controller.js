@@ -1,6 +1,6 @@
 let ctx, canvas, RESOURCE_PATH = "resources",
     tankWidth, tankHeight,
-    leftPressed, rightPressed, upPressed, downPressed,
+    leftPressed, rightPressed, upPressed, downPressed, firePressed,
     Render = require("render/render"), render,
     Key = require('config/keys.json'),
     ComponentSize = require("components/component-size"),
@@ -56,9 +56,6 @@ function draw() {
     if (map.isLoad()) {
         render.drawAll(map);
         controlPanzer(userPanzer);
-
-        console.log('userPanzer x ' + userPanzer.getCoordinates().x);
-        console.log('userPanzer y ' + userPanzer.getCoordinates().y);
     }
     requestAnimationFrame(draw);
 }
@@ -91,6 +88,12 @@ function controlPanzer(userPanzer) {
         userPanzer.moveDown();
         downPressed = false;
     }
+
+    if (firePressed) {
+        userPanzer.fire();
+        firePressed = false;
+    }
+    moveBullets(userPanzer.getBullets());
 }
 
 function canMoveRight(panzer, coordinate) {
@@ -137,6 +140,12 @@ function canMove(boundBorder, nextElement) {
     return boundBorder && !(nextElement instanceof Wall);
 }
 
+function moveBullets(bullets) {
+    for(let i = 0; i < bullets.length; i++) {
+        bullets[i].moveBullet();
+    }
+}
+
 function keyDownHandler(e) {
     if (e.keyCode === Key.LEFT) {
         leftPressed = true;
@@ -146,6 +155,8 @@ function keyDownHandler(e) {
         upPressed = true;
     } else if (e.keyCode === Key.DOWN) {
         downPressed = true;
+    } else if (e.keyCode === Key.SPACE) {
+        firePressed = true;
     }
 }
 
@@ -158,5 +169,7 @@ function keyUpHandler(e) {
         upPressed = false;
     } else if (e.keyCode === Key.DOWN) {
         downPressed = false;
+    } else if (e.keyCode === Key.SPACE) {
+        firePressed = false;
     }
 }

@@ -1,10 +1,12 @@
 let mainPath = "resources/pictures",
     wall = "wall.png",
     panzer = "dendy-tanks.png",
-    empty = "grass.jpg";
+    empty = "grass.jpg",
+    bullet = "bullet.png";
 
 module.exports = {
     panzerPath : mainPath + "/" + panzer,
     wallPath : mainPath + "/" + wall,
-    emptyPath : mainPath + "/" + empty
+    emptyPath : mainPath + "/" + empty,
+    bulletPath : mainPath + "/" + bullet
 }

@@ -55,20 +55,29 @@ function drawComponent(component) {
     }
 }
 
-function drawPanzer(userPanzer) {
-    let size = userPanzer.getSize(),
-        coordinates = userPanzer.getCoordinates();
+function drawPanzer(panzer) {
+    let size = panzer.getSize(),
+        coordinates = panzer.getCoordinates();
     centerX = (coordinates.x + size.width / 2),
     centerY = (coordinates.y + size.height / 2);
     topContext.save();
     topContext.translate(centerX, centerY);
 
-    topContext.rotate(userPanzer.getRotation() * Math.PI / 180);
+    topContext.rotate(panzer.getRotation() * Math.PI / 180);
     
-    topContext.drawImage(userPanzer.getImage(), -size.width / 2, -size.height / 2);
+    topContext.drawImage(panzer.getImage(), -size.width / 2, -size.height / 2);
     topContext.restore();
 
     drawRect(centerX, centerY);
+
+    drawBullets(panzer.getBullets());
+}
+
+function drawBullets(bullets) {
+    for(let i = 0; i < bullets.length; i++) {
+        topContext.drawImage(bullets[i].getImage(), bullets[i].getCoordinates().x,
+                    bullets[i].getCoordinates().y);
+    }
 }
 
 /**

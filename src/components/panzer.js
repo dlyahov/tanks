@@ -1,18 +1,21 @@
 let Component = require('components/component'),
-    Sprite = require('components/sprite')
-    dx = Component.getSize().width, dy = Component.getSize().height,
+    Sprite = require('components/sprite'),
+    Bullet = require('components/bullet'),
+    dx = Component.getSize().width, 
+    dy = Component.getSize().height,
     util = require('util'),
     resources = require('config/config-resources'),
     isMove = false,
     Rotation = require('config/rotation');
+const TIMEOUT_ANIMATION = 7;
 
 Panzer.prototype = Object.create(Sprite.prototype)
 Panzer.prototype.constructor = Panzer;
 
-
 function Panzer(x, y) {
     Sprite.apply(this, [x, y, resources.panzerPath]);
     this.componentBody.rotation = Rotation.RIGHT;
+    this.bullets = [];
 }
 
 Panzer.prototype.move = function (dx, dy) {
@@ -34,7 +37,7 @@ function animationMove(dx, dy) {
             isMove = false;
             clearInterval(timerAnimation);
         }
-    }.bind(this), 7);
+    }.bind(this), TIMEOUT_ANIMATION);
 }
 
 Panzer.prototype.moveLeft = function () {
@@ -68,5 +71,15 @@ Panzer.prototype.moveUp = function () {
         this.move(0, -dy);
     }
 };
+
+Panzer.prototype.fire = function() {
+    console.log('Fire!');
+    let bullet = new Bullet(this.componentBody.coordinates, this.getRotation());
+    this.bullets.push(bullet);
+}
+
+Panzer.prototype.getBullets = function() {
+    return this.bullets;
+}
 
 module.exports = Panzer;
