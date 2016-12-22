@@ -1,19 +1,18 @@
 let Component = require('components/component'),
+    Sprite = require('components/sprite')
     dx = Component.getSize().width, dy = Component.getSize().height,
     util = require('util'),
     resources = require('config/config-resources'),
     isMove = false,
     Rotation = require('config/rotation');
 
-Panzer.prototype = Object.create(Component.prototype)
+Panzer.prototype = Object.create(Sprite.prototype)
 Panzer.prototype.constructor = Panzer;
 
 
 function Panzer(x, y) {
-    Component.apply(this, [x, y, resources.panzerPath]);
-    this.componentBody.image.style.zIndex = -1;
+    Sprite.apply(this, [x, y, resources.panzerPath]);
     this.componentBody.rotation = Rotation.RIGHT;
-    this.currX
 }
 
 Panzer.prototype.move = function (dx, dy) {
@@ -37,10 +36,6 @@ function animationMove(dx, dy) {
         }
     }.bind(this), 7);
 }
-
-Panzer.prototype.getRotation = function () {
-    return this.componentBody.rotation;
-};
 
 Panzer.prototype.moveLeft = function () {
     if (this.componentBody.rotation !== Rotation.LEFT) {
